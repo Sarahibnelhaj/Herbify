@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Herbs - Herbify{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Explore Herbs</h1>
+    <div class="row" id="herbs-container">
+        <!-- Herbs will be dynamically inserted here -->
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    // Ensure the user is authenticated
+    checkAuth();
+
+    // Fetch all herbs on page load
+    fetchAllHerbs();
+</script>
+{% endblock %}

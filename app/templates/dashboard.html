@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Herbify{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4" style="font-size: 2.5rem; color: #28a745;">Dashboard</h1>
+    <div class="row">
+        <!-- User Herbs Section (for researchers) -->
+        <div class="col-md-6 mb-4" id="user-herbs-section" style="display: none;">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Your Herbs</h3>
+                    <div id="user-herbs">
+                        <p>Loading your herbs...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Products Section (for sellers) -->
+        <div class="col-md-6 mb-4" id="user-products-section" style="display: none;">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Your Products</h3>
+                    <div id="user-products">
+                        <p>Loading your products...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    // Ensure the user is authenticated
+    const { token, userRole } = checkAuth();
+
+    // Show role-specific sections
+    if (userRole === 'researcher') {
+        document.getElementById('user-herbs-section').style.display = 'block';
+        fetchUserHerbs(); // Fetch and display user's herbs
+    } else if (userRole === 'seller') {
+        document.getElementById('user-products-section').style.display = 'block';
+        fetchUserProducts(); // Fetch and display user's products
+    }
+</script>
+{% endblock %}

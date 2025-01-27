@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Home - Herbify{% endblock %}
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center py-5">
+    <div class="hero-container">
+        <h1 class="display-4">Welcome to Herbify</h1>
+        <p class="lead">Your partner for searching, selling, and managing medicinal herbs!</p>
+        <a href="/herbs" class="btn btn-primary btn-lg">Explore Herbs</a>
+    </div>
+</div>
+
+<!-- Cards Section -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h5>Discover Herbs</h5>
+                        <p>Explore a wide variety of medicinal herbs and their uses.</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"Nature holds the key to healing. Discover it today!"</p>
+                        <a href="/herbs" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h5>Buy Products</h5>
+                        <p>Find high-quality herbal products from trusted sellers.</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"Your wellness journey starts here. Shop with confidence!"</p>
+                        <a href="/products" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h5>Join Us</h5>
+                        <p>Register now to start selling or managing your herbal products.</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"Be part of a thriving community. Join us and grow together!"</p>
+                        <a href="/register" class="btn btn-primary">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Newsletter Section -->
+<div class="newsletter-section text-center py-5 mt-5">
+    <h3>Subscribe to Our Newsletter</h3>
+    <form id="newsletter-form" class="d-flex justify-content-center">
+        <input type="email" id="newsletter-email" class="form-control w-50 me-2" placeholder="Enter your email" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+    <div id="newsletter-message" class="mt-3"></div>
+</div>
+
+<!-- Include main.js -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    // Handle newsletter form submission
+    document.getElementById('newsletter-form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const email = document.getElementById('newsletter-email').value;
+
+        try {
+            const response = await fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('newsletter-message').innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>Success:</strong> ${data.message}
+                    </div>
+                `;
+            } else {
+                document.getElementById('newsletter-message').innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> ${data.error}
+                    </div>
+                `;
+            }
+        } catch (error) {
+            document.getElementById('newsletter-message').innerHTML = `
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> An unexpected error occurred. Please try again.
+                </div>
+            `;
+        }
+    });
+</script>
+{% endblock %}

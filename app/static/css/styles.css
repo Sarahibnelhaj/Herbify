@@ -1,0 +1,267 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('/static/images/Background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+}
+
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* Navbar */
+.navbar {
+    background-color: rgba(40, 167, 69, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .navbar {
+    background-color: rgba(18, 18, 18, 0.95) !important;
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #f8f9fa !important;
+}
+
+/* Hero Section */
+.hero-section {
+    flex: 1; /* Allow hero section to grow and push footer to the bottom */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.hero-container {
+    background: rgba(255, 255, 255, 0.8); /* White blurry background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #28a745, #17a2b8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section p {
+    color: #333;
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+.dark-mode .hero-container {
+    background: rgba(18, 18, 18, 0.8); /* Dark blurry background for dark mode */
+    color: #ffffff;
+}
+
+/* Flip Cards */
+.card {
+    margin-bottom: 20px;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.1)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    transition: transform 0.6s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    position: relative;
+    cursor: pointer;
+    height: 250px;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card-front {
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.1)
+    );
+}
+
+.card-back {
+    background: linear-gradient(
+        to bottom right,
+        rgba(40, 167, 69, 0.3),
+        rgba(40, 167, 69, 0.1)
+    );
+    transform: rotateY(180deg);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dark-mode .card {
+    background: linear-gradient(
+        to bottom right,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.1)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 40px 20px;
+    backdrop-filter: blur(10px);
+    margin-top: 40px;
+    margin-bottom: 100px; /* Add margin to avoid overlap with footer */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .newsletter-section {
+    background-color: rgba(18, 18, 18, 0.8);
+    color: #ffffff;
+}
+
+/* Footer */
+.footer {
+    background-color: rgba(40, 167, 69, 0.95);
+    color: #fff;
+    padding: 20px 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Fix footer at the bottom */
+    bottom: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure footer stays above other content */
+}
+
+/* Form Container */
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+/* Form Title */
+.form-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #28a745;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9); /* Slightly opaque background */
+    backdrop-filter: blur(5px); /* Blur effect */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #28a745; /* Green border on focus */
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Subtle shadow on focus */
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #218838;
+    transform: scale(1.02); /* Slight scale-up effect */
+}
+
+/* Remove Focus Outline Completely */
+*:focus {
+    outline: none !important;
+}

@@ -1,0 +1,700 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Medicinal Herbs API",
+    "description": "API for managing medicinal herbs and products, including CRUD operations.",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["username", "email", "password", "role"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Unique identifier of the user"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username of the user",
+            "example": "john_doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the user",
+            "example": "john@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password of the user",
+            "example": "password123"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the user",
+            "example": "researcher"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "description": "Whether the user is an admin",
+            "example": false
+          }
+        }
+      },
+      "Herb": {
+        "type": "object",
+        "required": ["common_name", "scientific_name"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Unique identifier of the herb"
+          },
+          "common_name": {
+            "type": "string",
+            "description": "Common name of the herb",
+            "example": "Basil"
+          },
+          "scientific_name": {
+            "type": "string",
+            "description": "Scientific name of the herb",
+            "example": "Ocimum basilicum"
+          },
+          "part_used": {
+            "type": "string",
+            "description": "Part of the herb used",
+            "example": "Leaves"
+          },
+          "toxicity": {
+            "type": "string",
+            "description": "Toxicity level of the herb",
+            "example": "Non-toxic"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the herb",
+            "example": "Aromatic herb used in cooking."
+          },
+          "image_url": {
+            "type": "string",
+            "description": "URL of the herb's image",
+            "example": "http://example.com/basil.jpg"
+          },
+          "researcher_id": {
+            "type": "integer",
+            "description": "ID of the researcher who added the herb",
+            "example": 1
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": ["name", "price", "seller_id"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Unique identifier of the product"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the product",
+            "example": "Basil Essential Oil"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the product",
+            "example": "Pure basil essential oil extracted from organic basil leaves."
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Price of the product",
+            "example": 19.99
+          },
+          "stock": {
+            "type": "integer",
+            "description": "Stock quantity of the product",
+            "example": 100
+          },
+          "seller_id": {
+            "type": "integer",
+            "description": "ID of the seller (user) who created the product",
+            "example": 1
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "description": "Register a new user with the provided details.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log in a user",
+        "description": "Log in a user and return a JWT token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/research/identify-plant": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Identify a plant",
+        "description": "Identify a plant using the Plant.id API and save it to the researcher's dashboard.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image_url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plant identified and saved successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/research/history": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "View research history",
+        "description": "View a researcher's personal research history.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Research history retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/marketplace": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "View marketplace",
+        "description": "View all products in the marketplace.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Marketplace products retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/products": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Add a new product",
+        "description": "Add a new product to the marketplace.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product added successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/seller/products": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "View seller products",
+        "description": "View all products added by the seller.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Seller products retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/register-admin": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Register a new admin",
+        "description": "Register a new admin user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin registered successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Only an existing admin can create new admins"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/login": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Log in an admin",
+        "description": "Log in an admin and return a JWT token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update a user",
+        "description": "Update a user's details.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete a user",
+        "description": "Delete a user by ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/users/role/{role}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get users by role",
+        "description": "Get all users by role.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}/make-admin": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Make a user an admin",
+        "description": "Make a user an admin and update their role to 'admin'.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is now an admin"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/herbs/upload": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Upload herb manually",
+        "description": "Admin manually uploads herb details.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Herb"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Herb uploaded successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/herbs": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "View all herbs",
+        "description": "View all herbs in the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Herbs retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all users",
+        "description": "Get all users in the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/admins": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all admins",
+        "description": "Get all admins in the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Admins retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/admin/clear-database": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Clear database",
+        "description": "Clear all data from the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Database cleared successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

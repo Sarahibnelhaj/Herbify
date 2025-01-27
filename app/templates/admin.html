@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - Herbify{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4" style="font-size: 2.5rem; color: #28a745;">Admin Dashboard</h1>
+    <div class="row">
+        <!-- All Users Section -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">All Users</h3>
+                    <div id="all-users">
+                        <p>Loading users...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Herbs Section -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">All Herbs</h3>
+                    <div id="all-herbs">
+                        <p>Loading herbs...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    // Ensure the user is authenticated and is an admin
+    const { token, userRole } = checkAuth();
+    if (userRole !== 'admin') {
+        alert('You do not have permission to access this page.');
+        window.location.href = '/';
+    }
+
+    // Fetch all users and herbs on page load
+    fetchAllUsers();
+    fetchAllHerbs();
+</script>
+{% endblock %}

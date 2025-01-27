@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Products - Herbify{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Products</h1>
+    <div class="row" id="products-container">
+        <!-- Products will be dynamically inserted here -->
+    </div>
+
+    <!-- Add Product Form (for sellers only) -->
+    <div class="mt-5" id="add-product-section" style="display: none;">
+        <h2>Add a New Product</h2>
+        <form onsubmit="addProduct(event)">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock</label>
+                <input type="number" id="stock" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+    // Ensure the user is authenticated
+    checkAuth();
+
+    // Fetch marketplace products on page load
+    fetchMarketplace();
+
+    // Show "Add Product" form only for sellers
+    const userRole = localStorage.getItem('user_role');
+    if (userRole === 'seller') {
+        document.getElementById('add-product-section').style.display = 'block';
+    }
+</script>
+{% endblock %}
