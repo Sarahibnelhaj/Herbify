@@ -14,7 +14,7 @@ Herbify is a comprehensive platform designed to manage, research, and sell medic
 
   * Admin Panel: Tools for administrators to manage users, herbs, and products.
 
-- Technologies Used:
+- **Technologies Used:**
   
   *    Front-End: HTML, CSS, JavaScript, Bootstrap
 
@@ -25,7 +25,8 @@ Herbify is a comprehensive platform designed to manage, research, and sell medic
     *    Containerization: Docker
 
     *    External API: Plant.id API for plant identification
-- Usage:
+ 
+- **Usage:**
     *    Researchers
           *    Plant Identification: Upload images of herbs to identify them using the Plant.id API.
 
