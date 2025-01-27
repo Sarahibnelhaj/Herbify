@@ -2,43 +2,45 @@
 Your Medicinal Herbs Guide
 Herbify is a comprehensive platform designed to manage, research, and sell medicinal herbs and herbal products. Built with modern web technologies, Herbify caters to three primary user roles: researchers, sellers, and administrators, each with distinct functionalities tailored to their needs.
 
-Features
-Plant Identification: Integration with the Plant.id API to identify and catalog medicinal herbs.
+- **Features:**
 
-Role-Based Access Control: Secure authentication and authorization for researchers, sellers, and administrators.
+    * Plant Identification: Integration with the Plant.id API to identify and catalog medicinal herbs.
 
-Marketplace: A platform for sellers to list and manage herbal products.
+    * Role-Based Access Control: Secure authentication and authorization for researchers, sellers, and administrators.
 
-Research Dashboard: A personalized dashboard for researchers to track their herb cataloging activities.
+    * Marketplace: A platform for sellers to list and manage herbal products.
 
-Admin Panel: Tools for administrators to manage users, herbs, and products.
+   * Research Dashboard: A personalized dashboard for researchers to track their herb cataloging activities.
 
-Technologies Used
-Front-End: HTML, CSS, JavaScript, Bootstrap
+  * Admin Panel: Tools for administrators to manage users, herbs, and products.
 
-Back-End: Flask, Flask-Smorest, Flask-JWT-Extended
+- Technologies Used:
+  
+  *    Front-End: HTML, CSS, JavaScript, Bootstrap
 
-Database: PostgreSQL, Flask-SQLAlchemy
+    *    Back-End: Flask, Flask-Smorest, Flask-JWT-Extended
 
-Containerization: Docker
+    *    Database: PostgreSQL, Flask-SQLAlchemy
 
-External API: Plant.id API for plant identification
-Usage
-Researchers
-Plant Identification: Upload images of herbs to identify them using the Plant.id API.
+    *    Containerization: Docker
 
-Research Dashboard: View and manage the herbs you have identified and cataloged.
+    *    External API: Plant.id API for plant identification
+- Usage:
+    *    Researchers
+          *    Plant Identification: Upload images of herbs to identify them using the Plant.id API.
 
-Sellers
-Product Management: List, update, and manage herbal products on the platform.
+            *    Research Dashboard: View and manage the herbs you have identified and cataloged.
 
-Marketplace: Browse and manage your product listings.
+    *    Sellers
+            *    Product Management: List, update, and manage herbal products on the platform.
 
-Administrators
-User Management: Add, update, and delete users, as well as assign roles.
+            *    Marketplace: Browse and manage your product listings.
 
-Herb Management: Manage the herb catalog, including adding new herbs and updating existing entries.
+    *    Administrators
+            *    User Management: Add, update, and delete users, as well as assign roles.
 
-Product Management: Oversee all products listed on the platform.
+            *    Herb Management: Manage the herb catalog, including adding new herbs and updating existing entries.
 
-Thank you for checking out Herbify! We hope this platform helps you in your journey with medicinal herbs and natural remedies. 🌿
+            *    Product Management: Oversee all products listed on the platform.
+
+Thank you for checking out Herbify!🌿
